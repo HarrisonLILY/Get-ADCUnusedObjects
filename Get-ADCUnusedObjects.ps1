@@ -113,7 +113,9 @@ function getUnusedNSObjects ($matchConfig, $NSObjectType, $paramName, $position)
     foreach ($objectCandidate in $objectsAll) {
         
         # For regex, replace dots with escaped dots
-        $objectCandidateDots = $objectCandidate -replace "\.", "\."
+        #objectCandidateDots = $objectCandidate -replace "\.", "\."
+        # Ecape * as well as . for wildcard certificates 
+        $objectCandidateDots = $objectCandidate -replace '[*.]','\$&'
 
         # Don't remove ADNS Services
         if ($NSObjectType -eq "service" -and ($matchConfig | select-string -Pattern ('^add service ' + $objectCandidate + ' \S+ ADNS'))) {
